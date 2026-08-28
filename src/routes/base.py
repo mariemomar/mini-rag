@@ -1,5 +1,6 @@
-from fastapi import FastAPI , APIRouter , Depends # it is important for the function that depends on the app settings 
-from helpers.config import get_settings , Settings
+from fastapi import APIRouter, Depends
+from src.helpers.config import Settings, get_settings
+
 base_router = APIRouter(
     prefix= "/api/v1",
     tags=["api_v1"]
