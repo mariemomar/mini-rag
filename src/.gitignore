@@ -218,4 +218,5 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
-ubunto.txt
+mini-rag/ubunto.txt
+mini-rag/test.txt

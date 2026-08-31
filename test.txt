@@ -1,0 +1,37 @@
+# Enterprise Knowledge Base: Retrieval-Augmented Generation (RAG) Systems
+
+## 1. Introduction to RAG Architecture
+Retrieval-Augmented Generation (RAG) is a design pattern used in Natural Language Processing (NLP) to augment Large Language Models (LLMs) with external domain knowledge. Standard LLMs rely solely on knowledge encoded inside their model weights during training. This creates two main limitations: potential factual hallucinations and an inability to access private or real-time data.
+
+By integrating an external retrieval step, a RAG system fetches relevant document segments from an external database given a user query. These retrieved passages are concatenated into the prompt context sent to the LLM, enabling the model to generate grounded and contextually accurate answers.
+
+---
+
+## 2. Document Preprocessing and Chunking Strategies
+Before documents can be embedded and stored in a vector database, they must be converted into smaller fragments known as chunks. Chunking is critical because vector models and LLMs have upper bounds on token window sizes.
+
+### 2.1 Fixed-Size Chunking
+Fixed-size chunking divides text into segments based on a strict count of characters, words, or tokens (e.g., 500 characters per chunk). While computationally simple, fixed-size chunking often splits text across sentence or paragraph boundaries, breaking semantic meaning mid-thought.
+
+### 2.2 Sentence and Paragraph Chunking
+Sentence chunking uses natural language processing models to split documents along structural punctuation boundaries. Paragraph-based chunking preserves logical topic groups by using double line-breaks as delimiters.
+
+### 2.3 Semantic and Recursive Chunking
+Recursive chunking uses a hierarchical list of separators—such as double line breaks (`\n\n`), single line breaks (`\n`), periods (`.`), and spaces—to split text. It prioritizes keeping larger structural blocks intact while recursively shrinking chunks until they fit the target token size.
+
+---
+
+## 3. Vector Embeddings and Indexing
+Once chunks are generated, they are processed by an embedding model (e.g., `text-embedding-3-small` or `bge-large-en`). The embedding model transforms raw text strings into dense floating-point vector arrays representing semantic meaning in high-dimensional space.
+
+### 3.1 Vector Databases
+The resulting vector embeddings are indexed into specialized databases such as Qdrant, ChromaDB, or PGVector. These engines utilize Approximate Nearest Neighbor (ANN) algorithms, such as Hierarchical Navigable Small World (HNSW) graphs, to perform sub-millisecond similarity searches over millions of vectors.
+
+---
+
+## 4. Retrieval and Generation Phase
+When a user submits a query to the application backend, the system executes three sequential steps:
+
+1. **Query Embedding:** The input string is passed through the same embedding model used during document ingestion.
+2. **Similarity Search:** The database compares the query vector against stored chunk vectors using cosine similarity or dot product metrics.
+3. **Prompt Augmentation:** The top-k most relevant text chunks are extracted and formatted into a structured prompt context sent to the generation model.

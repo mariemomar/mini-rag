@@ -6,3 +6,5 @@ class ResponseEnums(Enum):
     FILE_TYPE_NOT_ALLOWED ="File type not allowed"
     FILE_SIZE_EXCEEDS_LIMIT = "File size exceeds limit"
     FILE_UPLOAD_FAILED = "File upload failed"
+    PROCESSING_FAILED = "File processing failed"
+    PROCESSING_SUCCEEDED = "File processing succeeded"
