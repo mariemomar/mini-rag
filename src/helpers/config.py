@@ -17,6 +17,8 @@ class Settings(BaseSettings):
         env_file_encoding="utf-8",
         extra="ignore"
     )
+    MONGODB_URL: str
+    MONGODB_DATABASE: str
 
 def get_settings():
     return Settings()
