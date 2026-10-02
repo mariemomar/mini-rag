@@ -29,7 +29,7 @@ class ProjectModel(BaseDataModel):
         Create a new project in the database.
         """
         result = await self.collection.insert_one(project.dict(by_alias=True , exclude_unset=True)) # project is pydantic model so we convert it to dict before inserting
-        project._id = result.inserted_id  # Update the project instance with the generated ObjectId
+        project.id = result.inserted_id  # Update the project instance with the generated ObjectId
         return project
 
     async def get_project_or_create_one(self, project_id: str):
