@@ -23,3 +23,8 @@ class DataChunk(BaseModel):
 
     class Config:
         arbitrary_types_allowed = True
+
+
+class RetrievedDocument(BaseModel): # a new schema for the retrieved results
+    text : str
+    score : float
