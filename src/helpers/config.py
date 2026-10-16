@@ -17,8 +17,13 @@ class Settings(BaseSettings):
         env_file_encoding="utf-8",
         extra="ignore"
     )
-    MONGODB_URL: str
-    MONGODB_DATABASE: str
+    POSTGRES_USERNAME : str
+    POSTGRES_PASSWORD  : str
+    POSTGRES_HOST : str
+    POSTGRES_PORT : int
+    POSTGRES_MAIN_DATABASE : str
+
+
     GENERATION_BACKEND: str
     EMBEDDING_BACKEND: str
 
