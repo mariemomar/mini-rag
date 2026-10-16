@@ -1,6 +1,6 @@
 # Enterprise Knowledge Base: Retrieval-Augmented Generation (RAG) Systems
 
-## 1. Introduction to RAG Architecture
+## 1.Introduction to RAG Architecture
 Retrieval-Augmented Generation (RAG) is a design pattern used in Natural Language Processing (NLP) to augment Large Language Models (LLMs) with external domain knowledge. Standard LLMs rely solely on knowledge encoded inside their model weights during training. This creates two main limitations: potential factual hallucinations and an inability to access private or real-time data.
 
 By integrating an external retrieval step, a RAG system fetches relevant document segments from an external database given a user query. These retrieved passages are concatenated into the prompt context sent to the LLM, enabling the model to generate grounded and contextually accurate answers.
