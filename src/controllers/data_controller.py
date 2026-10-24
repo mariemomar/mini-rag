@@ -1,7 +1,7 @@
-from src.controllers.base_controller import BaseController
-from src.models.Enums.response_enums import ResponseEnums
+from controllers.base_controller import BaseController
+from models.Enums.response_enums import ResponseEnums
 from fastapi import UploadFile
-from src.controllers.project_controller import ProjectController
+from controllers.project_controller import ProjectController
 import re
 import os 
 

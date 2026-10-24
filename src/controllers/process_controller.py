@@ -1,9 +1,9 @@
-from src.controllers.base_controller import BaseController
+from controllers.base_controller import BaseController
 from .project_controller import ProjectController
 import os 
 from langchain_community.document_loaders import TextLoader
 from langchain_community.document_loaders import PyMuPDFLoader
-from src.models.Enums.processing_enums import ProcessingEnum
+from models.Enums.processing_enums import ProcessingEnum
 from langchain_text_splitters import RecursiveCharacterTextSplitter
 
 class ProcessController(BaseController):

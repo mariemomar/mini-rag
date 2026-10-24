@@ -1,4 +1,4 @@
-from src.controllers.base_controller import BaseController
+from controllers.base_controller import BaseController
 import os 
 
 

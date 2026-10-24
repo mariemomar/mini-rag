@@ -1,11 +1,11 @@
 from controllers import process_controller
 from fastapi import APIRouter, Depends, UploadFile , status, Request
 from fastapi.responses import JSONResponse
-from src.controllers import DataController , ProjectController , ProcessController
-from src.helpers.config import Settings, get_settings
+from controllers import DataController , ProjectController , ProcessController
+from helpers.config import Settings, get_settings
 import os
 import aiofiles
-from src.models.Enums.response_enums import ResponseEnums 
+from models.Enums.response_enums import ResponseEnums 
 from models.Enums.AssetTypeEnum import AssetTypeEnum 
 import logging 
 from .schemes.data import ProcessRequest 
@@ -13,6 +13,7 @@ from models.ProjectModel import ProjectModel
 from models.ChunkModel import ChunkModel
 from models.AssetModel import AssetModel
 from models.db_schemes import DataChunk, Asset
+from controllers.nlp_controller import NLPController
 
 
 
@@ -90,6 +91,13 @@ async def process_endpoint(request : Request , project_id : int , process_reques
         )
     project = await project_model.get_project_or_create_one(project_id=project_id)
 
+    nlp_controller = NLPController(
+         vectordb_client=request.app.vectordb_client,
+         generation_client=request.app.generation_client,
+         embedding_client=request.app.embedding_client,
+         template_parser=request.app.template_parser,
+    )
+
     asset_model = await AssetModel.create_instance(
             db_client = request.app.db_client,
         )
@@ -135,6 +143,10 @@ async def process_endpoint(request : Request , project_id : int , process_reques
         )
 
     if do_reset == 1:
+        collection_name = nlp_controller.create_collection_name(project_id=project.project_id)
+        # delete associated vectors collections
+        _= await request.app.vectordb_client.delete_collection(collection_name)
+        # delete associated chunks
         _= await chunk_model.delete_chunks_by_project_id(project_id=project.project_id)
 
     for asset_id , file_id in project_files_ids.items():

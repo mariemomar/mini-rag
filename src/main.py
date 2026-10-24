@@ -1,6 +1,6 @@
 from fastapi import FastAPI
-from src.routes import data, base , nlp
-from src.helpers.config import get_settings
+from routes import data, base , nlp
+from helpers.config import get_settings
 from stores.llm.LLMProviderFactory import LLMProviderFactory
 from stores.vectordb.VectorDBProviderFactory import VectorDBProviderFactory
 from stores.llm.templates.template_parser import TemplateParser
@@ -20,7 +20,7 @@ async def startup_span():
     )
 
     llm_providers_factory = LLMProviderFactory(settings)
-    vectordb_providers_factory = VectorDBProviderFactory(settings)
+    vectordb_providers_factory = VectorDBProviderFactory(config=settings , db_client=app.db_client)
 
     # generation client 
     app.generation_client = llm_providers_factory.create(provider = settings.GENERATION_BACKEND)
@@ -32,15 +32,15 @@ async def startup_span():
 
     # vector database client
     app.vectordb_client = vectordb_providers_factory.create(provider = settings.VECTOR_DB_BACKEND)
-    app.vectordb_client.connect()
+    await app.vectordb_client.connect()
 
     # template parser
     app.template_parser = TemplateParser(language=settings.PRIMARY_LANG , default_language  =settings.DEFAULT_LANG)
 
 @app.on_event("shutdown")
 async def shutdown_span():
-    app.db_engine.dispose()
-    app.vectordb_client.disconnect()
+    await app.db_engine.dispose()
+    await app.vectordb_client.disconnect()
 
 
 # app.router.lifespan.on_startup.append(startup_span)
